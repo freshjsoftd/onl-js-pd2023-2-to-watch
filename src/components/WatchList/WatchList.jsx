@@ -3,7 +3,7 @@ import WatchItem from '../WatchItem/WatchItem';
 
 export class WatchList extends Component {
 	render() {
-		console.log(this.props.movies);
+		// console.log(this.props.movies);
 		return (
 			<>
 				{this.props.movies.map((movie) => {
@@ -11,6 +11,7 @@ export class WatchList extends Component {
                         <WatchItem 
                             key={movie.id}
                             movie={movie}
+							onToggle={this.props.onToggle}
                         />
                     )
                 })}
