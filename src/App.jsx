@@ -3,6 +3,8 @@ import { nanoid } from 'nanoid';
 import './App.css';
 import WatchList from './components/WatchList/WatchList';
 import WatchForm from './components/WatchForm/WatchForm';
+// import Mouse from './components/Mouse';
+// import Cat from './components/Cat';
 
 export class App extends Component {
 	state = {
@@ -30,37 +32,61 @@ export class App extends Component {
 		],
 	};
 
+  componentDidMount(){
+    const movies = JSON.parse(localStorage.getItem('movies'));
+    if(!movies){
+      this.setState({
+        movies: [],
+      })
+    }else{
+      this.setState({
+        movies: [...movies]
+      })
+    }
+  }
+
 	toggleToWatch = (id) => {
-		console.log(this)
-		this.setState({
-			movies: this.state.movies.map((movie) => {
+		// console.log(this)
+		this.setState((state) => {
+			const movies = state.movies.map((movie) => {
 				if (movie.id !== id) {
 					return movie;
 				}
 				return { ...movie, isDone: !movie.isDone };
-			}),
+			});
+			this.saveMovies(movies);
+			return {
+				movies,
+			};
 		});
-    this.saveMovies()
 	};
 
 	// toggleBindToWatch = this.toggleToWatch.bind(this)
 
 	addMovie = (movie) => {
 		movie.id = nanoid();
-		this.setState({
-			movies: [...this.state.movies, movie],
+		this.setState((state) => {
+			const movies = [...state.movies, movie];
+      this.saveMovies(movies);
+      return {
+        movies
+      }
 		});
 	};
 
-  deleteMovie = (id) => {
-    this.setState({
-      movies: [...this.state.movies.filter((movie) => movie.id !== id)],
-    })
-  }
+	deleteMovie = (id) => {
+		this.setState((state) => {
+			const movies =  state.movies.filter((movie) => movie.id !== id);
+      this.saveMovies(movies);
+      return {
+        movies
+      }
+		});
+	};
 
-  saveMovies = () => {
-    localStorage.setItem('movies', JSON.stringify(this.state.movies))
-  }
+	saveMovies = (arrMovies) => {
+		localStorage.setItem('movies', JSON.stringify(arrMovies));
+	};
 
 	render() {
 		return (
@@ -68,9 +94,13 @@ export class App extends Component {
 				<WatchList
 					movies={this.state.movies}
 					onToggle={this.toggleToWatch}
-          onDelete={this.deleteMovie}
+					onDelete={this.deleteMovie}
 				/>
-				<WatchForm onSubmit={this.addMovie}/>
+				<WatchForm onSubmit={this.addMovie} />
+        {/* <Mouse render={(mouse) => <Cat mouse={mouse}/>}/> */}
+        {/* <Mouse>
+          {(mouse) => <Cat mouse={mouse}/>}
+        </Mouse> */}
 			</>
 		);
 	}
