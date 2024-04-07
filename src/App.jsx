@@ -31,7 +31,7 @@ export class App extends Component {
 	};
 
 	toggleToWatch = (id) => {
-		// console.log(this)
+		console.log(this)
 		this.setState({
 			movies: this.state.movies.map((movie) => {
 				if (movie.id !== id) {
@@ -40,6 +40,7 @@ export class App extends Component {
 				return { ...movie, isDone: !movie.isDone };
 			}),
 		});
+    this.saveMovies()
 	};
 
 	// toggleBindToWatch = this.toggleToWatch.bind(this)
@@ -51,12 +52,23 @@ export class App extends Component {
 		});
 	};
 
+  deleteMovie = (id) => {
+    this.setState({
+      movies: [...this.state.movies.filter((movie) => movie.id !== id)],
+    })
+  }
+
+  saveMovies = () => {
+    localStorage.setItem('movies', JSON.stringify(this.state.movies))
+  }
+
 	render() {
 		return (
 			<>
 				<WatchList
 					movies={this.state.movies}
 					onToggle={this.toggleToWatch}
+          onDelete={this.deleteMovie}
 				/>
 				<WatchForm onSubmit={this.addMovie}/>
 			</>
