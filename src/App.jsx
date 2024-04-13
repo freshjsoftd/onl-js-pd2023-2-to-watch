@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { nanoid } from 'nanoid';
+import RingLoader from 'react-spinners/RingLoader';
 import './App.css';
 import WatchList from './components/WatchList/WatchList';
 import WatchForm from './components/WatchForm/WatchForm';
@@ -22,7 +23,6 @@ export class App extends Component {
         movies: [...movies]
       })
     }
-	
   }
 
 //   componentDidUpdate(){
@@ -75,6 +75,9 @@ export class App extends Component {
 	render() {
 		return (
 			<>
+			{this.state.movies.length === 0 && (
+				<RingLoader color='red' size='300' />
+			)}
 				<WatchList
 					movies={this.state.movies}
 					onToggle={this.toggleToWatch}
