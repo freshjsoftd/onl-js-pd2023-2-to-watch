@@ -5,11 +5,12 @@ export class WatchForm extends Component {
 
   state = {
     movieTitle: '',
+    director: '',
   }
 
   onInputChange = (event) => {
     this.setState({
-      movieTitle: event.target.value,
+      [event.target.name]: event.target.value,
     })
   }
 
@@ -17,6 +18,7 @@ export class WatchForm extends Component {
     event.preventDefault();
     this.props.onSubmit({
       title: this.state.movieTitle,
+      director: this.state.director,
       isDone: false,
     })
     this.setState({
@@ -32,7 +34,14 @@ export class WatchForm extends Component {
       >
         <input 
           type="text"
+          name='movieTitle'
           value={this.state.movieTitle}
+          onChange={this.onInputChange}
+        />
+        <input 
+          type="text"
+          name='director'
+          value={this.state.director}
           onChange={this.onInputChange}
         />
         <button className='btn'>Add</button>
