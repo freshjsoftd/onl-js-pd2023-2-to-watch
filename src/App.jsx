@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
 import { nanoid } from 'nanoid';
 import RingLoader from 'react-spinners/RingLoader';
 import './App.css';
@@ -7,90 +7,67 @@ import WatchForm from './components/WatchForm/WatchForm';
 // import Mouse from './components/Mouse';
 // import Cat from './components/Cat';
 
-export class App extends Component {
-	state = {
-		movies: [],
-	};
+function App() {
+	const [arrMovies, setArrMovies] = useState([]);
 
-  componentDidMount(){
-    const movies = JSON.parse(localStorage.getItem('movies'));
-    if(!movies){
-      this.setState({
-        movies: [],
-      })
-    }else{
-      this.setState({
-        movies: [...movies]
-      })
-    }
-  }
+	// useEffect(() => {
+	// 	const movies = JSON.parse(localStorage.getItem('movies'));
+	// 	if (!movies) {
+	// 		setArrMovies([]);
+	// 	} else {
+	// 		setArrMovies(movies);
+	// 	}
+	// }, []);
+	useEffect(getFromStorage, []);
 
-//   componentDidUpdate(){
-// 	console.log('Component was updated')
-//   }
-
-	toggleToWatch = (id) => {
-		// console.log(this)
-		this.setState((state) => {
-			const movies = state.movies.map((movie) => {
-				if (movie.id !== id) {
-					return movie;
-				}
-				return { ...movie, isDone: !movie.isDone };
-			});
-			this.saveMovies(movies);
-			return {
-				movies,
-			};
-		});
-	};
-
-	// toggleBindToWatch = this.toggleToWatch.bind(this)
-
-	addMovie = (movie) => {
-		movie.id = nanoid();
-		this.setState((state) => {
-			const movies = [...state.movies, movie];
-      this.saveMovies(movies);
-      return {
-        movies
-      }
-		});
-	};
-
-	deleteMovie = (id) => {
-		this.setState((state) => {
-			const movies =  state.movies.filter((movie) => movie.id !== id);
-      this.saveMovies(movies);
-      return {
-        movies
-      }
-		});
-	};
-
-	saveMovies = (arrMovies) => {
-		localStorage.setItem('movies', JSON.stringify(arrMovies));
-	};
-
-	render() {
-		return (
-			<>
-			{this.state.movies.length === 0 && (
-				<RingLoader color='red' size='300' />
-			)}
-				<WatchList
-					movies={this.state.movies}
-					onToggle={this.toggleToWatch}
-					onDelete={this.deleteMovie}
-				/>
-				<WatchForm onSubmit={this.addMovie} />
-        {/* <Mouse render={(mouse) => <Cat mouse={mouse}/>}/> */}
-        {/* <Mouse>
-          {(mouse) => <Cat mouse={mouse}/>}
-        </Mouse> */}
-			</>
-		);
+	function getFromStorage() {
+		const movies = JSON.parse(localStorage.getItem('movies'));
+		if (!movies) {
+			setArrMovies([]);
+		} else {
+			setArrMovies(movies);
+		}
 	}
+
+	function toggleToWatch(id) {
+		const movies = arrMovies.map((movie) => {
+			if (movie.id !== id) {
+				return movie;
+			}
+			return { ...arrMovies, isDone: !movie.isDone };
+		});
+		setArrMovies((movies) => movies);
+		saveMovies(movies);
+	}
+
+	const addMovie = (movie) => {
+		movie.id = nanoid();
+		const movies = [...arrMovies, movie];
+		setArrMovies(movies);
+		saveMovies(movies);
+	};
+
+	const deleteMovie = (id) => {
+		const movies = arrMovies.filter((movie) => movie.id !== id);
+		setArrMovies(movies);
+		saveMovies(movies);
+	};
+
+	const saveMovies = (movies) => {
+		localStorage.setItem('movies', JSON.stringify(movies));
+	};
+
+	return (
+		<>
+			{arrMovies.length === 0 && <RingLoader color='red' size='300' />}
+			<WatchList
+				movies={arrMovies}
+				onToggle={toggleToWatch}
+				onDelete={deleteMovie}
+			/>
+			<WatchForm onSubmit={addMovie} />
+		</>
+	);
 }
 
 export default App;
