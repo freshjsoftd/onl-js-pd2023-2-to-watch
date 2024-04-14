@@ -1,37 +1,38 @@
-import { Component } from 'react';
+// import { useState } from 'react';
+import PropTypes from 'prop-types';
 import WatchItem from '../WatchItem/WatchItem';
 
-export class WatchList extends Component {
-	// state = {
-	// 	count: 0,
-	// };
+function WatchList({ movies, onToggle, onDelete, string }) {
+	// const [count, setCount] = useState(0);
 
-	// static getDerivedStateFromProps(props, state) {
-	// 	if (props.movies.length !== state.count) {
-	// 		return {
-	// 			count: props.movies.length,
-	// 		};
-	// 	}
-	// }
+	// setCount();
 
-	render() {
-		console.log(this.props.movies);
-		// console.log(this.state.count);
-		return (
-			<>
-				{this.props.movies.map((movie) => {
-					return (
-						<WatchItem
-							key={movie.id}
-							movie={movie}
-							onToggle={this.props.onToggle}
-							onDelete={this.props.onDelete}
-						/>
-					);
-				})}
-			</>
-		);
-	}
+	// console.log(count);
+	return (
+		<>
+			{movies.map((movie) => {
+				return (
+					<WatchItem
+						key={movie.id}
+						movie={movie}
+						onToggle={onToggle}
+						onDelete={onDelete}
+					/>
+				);
+			})}
+			{string} 
+		</>
+	);
+}
+
+WatchList.propTypes = {
+	movies: PropTypes.array,
+	onToggle: PropTypes.func.isRequired,
+	onDelete: PropTypes.func.isRequired,
+}
+
+WatchList.defaultProps = {
+	string: 'Hello',
 }
 
 export default WatchList;

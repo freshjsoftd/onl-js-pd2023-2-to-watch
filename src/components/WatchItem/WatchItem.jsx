@@ -1,40 +1,46 @@
-import { Component } from 'react';
+// import { useEffect } from 'react';
 import './WatchItem.css'
 
-export class WatchItem extends Component {
-
-  onMovieDelete = (event) => {
-    event.stopPropagation();
-    this.props.onDelete(this.props.movie.id)
+const divStyles = {
+    color: 'white',
   }
 
-  // componentDidMount(){
-  //   this.idInter = setInterval(() => console.log(`${Date.now()}`), 5000);
-  // }
+function toggleBackground(movie){
+  return {
+    ...divStyles,
+    backgroundColor: movie.isDone ? 'cadetblue' : 'darkgoldenrod'
+  }
+}
 
-  // componentWillUnmount(){
-  //   console.log('Clear interval')
-  //   clearInterval(this.idInter)
-  // }
- 
-  render() {
-    // console.log(this.props)
-    const {id, title, director, isDone} = this.props.movie;
-    const onToggle = this.props.onToggle;
+export const WatchItem = ({movie, onToggle, onDelete}) => {
+
+  const {id, title, director} = movie;
+
+  // useEffect(() => {
+  //   console.log('Hello')
+  //   return () => {
+  //     console.log('Bye')
+  //   }
+  // }, [])
+
+  const onMovieDelete = (event) => {
+    event.stopPropagation();
+    onDelete(id)
+  }
     return (
       <div 
-        className={'watch-item ' + (isDone ? 'done' : '')}
+        className='watch-item'
+        style={toggleBackground(movie)}
         onClick={() => onToggle(id)}
       >
-        <p className='content'>{title} {director}</p>
+        <p className='content'>{title} produced by {director}</p>
         <span 
           className='delete-btn'
-          onClick={this.onMovieDelete}
+          onClick={onMovieDelete}
         >X
         </span>
       </div>
     )
   }
-}
 
 export default WatchItem

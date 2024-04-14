@@ -1,54 +1,52 @@
-import { Component } from 'react'
+import { useState } from 'react'
 import './WatchForm.css'
 
-export class WatchForm extends Component {
+function WatchForm({onSubmit}){
 
-  state = {
-    movieTitle: '',
-    director: '',
+  const [movieTitle, setMovieTitle] = useState('');
+  const [director, setDirector] = useState('');
+
+  const onInputChange = (event) => {
+    if(event.target.name === 'movieTitle'){
+      setMovieTitle(event.target.value)
+    }
+    if(event.target.name === 'director'){
+      setDirector(event.target.value)
+    }
   }
 
-  onInputChange = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value,
-    })
-  }
-
-  onFormSubmit = (event) => {
+  const onFormSubmit = (event) => {
     event.preventDefault();
-    this.props.onSubmit({
-      title: this.state.movieTitle,
-      director: this.state.director,
+    onSubmit({
+      title: movieTitle,
+      director: director,
       isDone: false,
     })
-    this.setState({
-      movieTitle: '',
-    })
+    setMovieTitle('');
+    setDirector('');
   }
 
-  render() {
     return (
       <form 
         className='watch-form'
-        onSubmit={this.onFormSubmit}
+        onSubmit={onFormSubmit}
       >
         <input 
           type="text"
           name='movieTitle'
-          value={this.state.movieTitle}
-          onChange={this.onInputChange}
+          value={movieTitle}
+          onChange={onInputChange}
         />
         <input 
           type="text"
           name='director'
-          value={this.state.director}
-          onChange={this.onInputChange}
+          value={director}
+          onChange={onInputChange}
         />
         <button className='btn'>Add</button>
 
       </form>
     )
   }
-}
 
 export default WatchForm

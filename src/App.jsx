@@ -34,9 +34,9 @@ function App() {
 			if (movie.id !== id) {
 				return movie;
 			}
-			return { ...arrMovies, isDone: !movie.isDone };
+			return { ...movie, isDone: !movie.isDone };
 		});
-		setArrMovies((movies) => movies);
+		setArrMovies(movies);
 		saveMovies(movies);
 	}
 
@@ -64,6 +64,7 @@ function App() {
 				movies={arrMovies}
 				onToggle={toggleToWatch}
 				onDelete={deleteMovie}
+				// string='Hi'
 			/>
 			<WatchForm onSubmit={addMovie} />
 		</>
