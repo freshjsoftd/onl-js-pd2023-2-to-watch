@@ -1,0 +1,57 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "watch": [
+    {
+      "title": "Lord of the rings",
+      "director": "Peter Jackson",
+      "isDone": false,
+      "id": 1655206999251
+    },
+    {
+      "title": "Назад в будущее",
+      "director": "Роберт Земекис",
+      "isDone": false,
+      "id": 1655209153491
+    },
+    {
+      "title": "Чужие",
+      "director": "Ридли Скотт",
+      "isDone": true,
+      "id": 1655562907749
+    },
+    {
+      "title": "Аватар",
+      "director": "Питер Джексон",
+      "isDone": false,
+      "id": 1655562907750
+    },
+    {
+      "title": "Игра Престолов",
+      "director": "Дэвид Бениофф",
+      "isDone": false,
+      "id": 1655562907751
+    },
+    {
+      "title": "Saving Private Ryan",
+      "director": "Steven Spielberg",
+      "isDone": false,
+      "id": "_soTg-RQomiu8o9E6Wt2H"
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}
