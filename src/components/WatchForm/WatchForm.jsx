@@ -1,29 +1,32 @@
-import { useState } from 'react'
+// import { useState } from 'react'
+import { useField} from '../../hooks'
 import './WatchForm.css'
 
 function WatchForm({onSubmit}){
 
-  const [movieTitle, setMovieTitle] = useState('');
-  const [director, setDirector] = useState('');
+  // const [movieTitle, setMovieTitle] = useState('');
+  // const [director, setDirector] = useState('');
+  const title = useField('');
+  const director = useField('');
 
-  const onInputChange = (event) => {
-    if(event.target.name === 'movieTitle'){
-      setMovieTitle(event.target.value)
-    }
-    if(event.target.name === 'director'){
-      setDirector(event.target.value)
-    }
-  }
+  // const onInputChange = (event) => {
+  //   if(event.target.name === 'movieTitle'){
+  //     setMovieTitle(event.target.value)
+  //   }
+  //   if(event.target.name === 'director'){
+  //     setDirector(event.target.value)
+  //   }
+  // }
 
   const onFormSubmit = (event) => {
     event.preventDefault();
     onSubmit({
-      title: movieTitle,
-      director: director,
+      title: title.value,
+      director: director.value,
       isDone: false,
     })
-    setMovieTitle('');
-    setDirector('');
+    // setMovieTitle('');
+    // setDirector('');
   }
 
     return (
@@ -33,15 +36,13 @@ function WatchForm({onSubmit}){
       >
         <input 
           type="text"
-          name='movieTitle'
-          value={movieTitle}
-          onChange={onInputChange}
+          name='title'
+          {...title}
         />
         <input 
           type="text"
           name='director'
-          value={director}
-          onChange={onInputChange}
+          {...director}
         />
         <button className='btn'>Add</button>
 

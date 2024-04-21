@@ -1,22 +1,22 @@
 // import { useState } from 'react';
+import { useContext } from 'react';
 import PropTypes from 'prop-types';
 import WatchItem from '../WatchItem/WatchItem';
+import { MovieContext } from '../../context';
 
-function WatchList({ movies, onToggle, onDelete, string }) {
-	// const [count, setCount] = useState(0);
+function WatchList({ string }) {
+	
+   const {arrMovies} = useContext(MovieContext)
 
-	// setCount();
-
-	// console.log(count);
 	return (
 		<>
-			{movies.map((movie) => {
+			{arrMovies.map((movie) => {
 				return (
 					<WatchItem
 						key={movie.id}
 						movie={movie}
-						onToggle={onToggle}
-						onDelete={onDelete}
+						// onToggle={onToggle}
+						// onDelete={onDelete}
 					/>
 				);
 			})}
@@ -27,8 +27,8 @@ function WatchList({ movies, onToggle, onDelete, string }) {
 
 WatchList.propTypes = {
 	movies: PropTypes.array,
-	onToggle: PropTypes.func.isRequired,
-	onDelete: PropTypes.func.isRequired,
+	// onToggle: PropTypes.func.isRequired,
+	// onDelete: PropTypes.func.isRequired,
 }
 
 WatchList.defaultProps = {

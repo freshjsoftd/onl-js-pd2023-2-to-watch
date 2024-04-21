@@ -1,4 +1,6 @@
 // import { useEffect } from 'react';
+import { useContext } from 'react';
+import { MovieContext } from '../../context';
 import './WatchItem.css'
 
 const divStyles = {
@@ -12,7 +14,9 @@ function toggleBackground(movie){
   }
 }
 
-export const WatchItem = ({movie, onToggle, onDelete}) => {
+export const WatchItem = ({movie}) => {
+
+  const {onDelete, onToggle} = useContext(MovieContext)
 
   const {id, title, director} = movie;
 

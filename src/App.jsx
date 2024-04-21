@@ -5,6 +5,7 @@ import './App.css';
 import WatchList from './components/WatchList/WatchList';
 import WatchForm from './components/WatchForm/WatchForm';
 import api from './api/movie-service';
+import { MovieContext } from './context';
 
 function App() {
 	const [arrMovies, setArrMovies] = useState([]);
@@ -19,44 +20,51 @@ function App() {
 		});
 	}, []);
 
-
 	function toggleToWatch(id) {
 		const updatedMovie = arrMovies.find((movie) => movie.id === id);
 		updatedMovie.isDone = !updatedMovie.isDone;
-		console.log(updatedMovie)
-		api.put(`/${id}`, updatedMovie).then(({data}) => {
-			setArrMovies(arrMovies.map((movie) => {
-				return movie.id !== id ? movie : data
-			}))
-		})
+		console.log(updatedMovie);
+		api.put(`/${id}`, updatedMovie).then(({ data }) => {
+			setArrMovies(
+				arrMovies.map((movie) => {
+					return movie.id !== id ? movie : data;
+				})
+			);
+		});
 	}
 
 	const addMovie = (movie) => {
-		api.post('/', movie).then(({data}) => {
-			console.log(data)
+		api.post('/', movie).then(({ data }) => {
+			console.log(data);
 			const newMovies = [...arrMovies, data];
-			setArrMovies(newMovies)
-		})
+			setArrMovies(newMovies);
+		});
 	};
 
 	const deleteMovie = (id) => {
-		api.delete(`/${id}`).then(({status}) => console.log(status))
+		api.delete(`/${id}`).then(({ status }) => console.log(status));
 		const newMovies = arrMovies.filter((movie) => movie.id !== id);
-		setArrMovies(newMovies)
-
+		setArrMovies(newMovies);
 	};
-
 
 	return (
 		<>
-			{arrMovies.length === 0 && <RingLoader color='red' size='300' />}
-			<WatchList
-				movies={arrMovies}
-				onToggle={toggleToWatch}
-				onDelete={deleteMovie}
-				// string='Hi'
-			/>
-			<WatchForm onSubmit={addMovie} />
+			<MovieContext.Provider value={{
+				arrMovies,
+				onToggle: toggleToWatch,
+				onDelete: deleteMovie,
+				}}>
+				{arrMovies.length === 0 && (
+					<RingLoader color='red' size='300' />
+				)}
+				<WatchList
+					// movies={arrMovies}
+					// onToggle={toggleToWatch}
+					// onDelete={deleteMovie}
+					// string='Hi'
+				/>
+				<WatchForm onSubmit={addMovie} />
+			</MovieContext.Provider>
 		</>
 	);
 }

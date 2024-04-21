@@ -41,14 +41,20 @@
     {
       "title": "Игра Престолов",
       "director": "Дэвид Бениофф",
-      "isDone": true,
+      "isDone": false,
       "id": 1655562907751
     },
     {
       "title": "Saving Private Ryan",
       "director": "Steven Spielberg",
-      "isDone": true,
+      "isDone": false,
       "id": "_soTg-RQomiu8o9E6Wt2H"
+    },
+    {
+      "title": "sdsds",
+      "director": "Леонид Гайдай",
+      "isDone": true,
+      "id": 1655562907752
     }
   ],
   "profile": {
