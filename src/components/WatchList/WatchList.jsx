@@ -1,16 +1,21 @@
-// import { useState } from 'react';
-import { useContext } from 'react';
-import PropTypes from 'prop-types';
+import { useEffect } from 'react';
+// import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+
+import {getMovies, toggleMovie} from '../../store/actions/movieActions'
 import WatchItem from '../WatchItem/WatchItem';
-import { MovieContext } from '../../context';
+import api from '../../api/movie-service'
 
-function WatchList({ string }) {
+function WatchList({movies, getMovies}) {
 	
-   const {arrMovies} = useContext(MovieContext)
 
+	useEffect(() => {
+		api.get('/')
+			.then(({data}) => getMovies(data))
+	})
 	return (
 		<>
-			{arrMovies.map((movie) => {
+			{movies.map((movie) => {
 				return (
 					<WatchItem
 						key={movie.id}
@@ -20,19 +25,38 @@ function WatchList({ string }) {
 					/>
 				);
 			})}
-			{string} 
 		</>
 	);
 }
 
-WatchList.propTypes = {
-	movies: PropTypes.array,
-	// onToggle: PropTypes.func.isRequired,
-	// onDelete: PropTypes.func.isRequired,
+// WatchList.propTypes = {
+// 	movies: PropTypes.array,
+// 	// onToggle: PropTypes.func.isRequired,
+// 	// onDelete: PropTypes.func.isRequired,
+// }
+
+// WatchList.defaultProps = {
+// 	string: 'Hello',
+// }
+
+/* function mapStateToProps({movies}){
+	return {
+		movies,
+	}
+} */
+
+const mapStateToProps = ({movies}) => ({movies});
+
+const mapDispatchToProps = {
+	getMovies,
+	toggleMovie,
 }
 
-WatchList.defaultProps = {
-	string: 'Hello',
-}
+// function mapDispatchToProps(dispatch){
+// 	return {
+// 		getMovies: (movies) => dispatch(getMovies(movies))
+// 	}
+// }
 
-export default WatchList;
+
+export default connect(mapStateToProps, mapDispatchToProps)(WatchList);
