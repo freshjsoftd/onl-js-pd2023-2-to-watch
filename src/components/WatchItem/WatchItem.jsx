@@ -1,6 +1,7 @@
 // import { useEffect } from 'react';
-import { useContext } from 'react';
-import { MovieContext } from '../../context';
+import { connect } from 'react-redux';
+
+import {toggleMovie, delMovie} from '../../store/actions/movieActions'
 import './WatchItem.css'
 
 const divStyles = {
@@ -14,9 +15,8 @@ function toggleBackground(movie){
   }
 }
 
-export const WatchItem = ({movie}) => {
+export const WatchItem = ({movie, toggleMovie, delMovie}) => {
 
-  const {onDelete, onToggle} = useContext(MovieContext)
 
   const {id, title, director} = movie;
 
@@ -29,13 +29,13 @@ export const WatchItem = ({movie}) => {
 
   const onMovieDelete = (event) => {
     event.stopPropagation();
-    onDelete(id)
+    delMovie(id)
   }
     return (
       <div 
         className='watch-item'
         style={toggleBackground(movie)}
-        onClick={() => onToggle(id)}
+        onClick={() => toggleMovie(id)}
       >
         <p className='content'>{title} produced by {director}</p>
         <span 
@@ -47,4 +47,9 @@ export const WatchItem = ({movie}) => {
     )
   }
 
-export default WatchItem
+  const mapDispatchToProps = {
+    delMovie,
+    toggleMovie,
+  };
+
+export default connect(null, mapDispatchToProps)(WatchItem)

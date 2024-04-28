@@ -1,18 +1,15 @@
 import { useEffect } from 'react';
 // import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
-import {getMovies, toggleMovie} from '../../store/actions/movieActions'
+import { getMovies, toggleMovie } from '../../store/actions/movieActions';
 import WatchItem from '../WatchItem/WatchItem';
-import api from '../../api/movie-service'
+import api from '../../api/movie-service';
 
-function WatchList({movies, getMovies}) {
-	
-
+function WatchList({ movies, getMovies }) {
 	useEffect(() => {
-		api.get('/')
-			.then(({data}) => getMovies(data))
-	})
+		api.get('/watch').then(({ data }) => getMovies(data));
+	});
 	return (
 		<>
 			{movies.map((movie) => {
@@ -45,18 +42,17 @@ function WatchList({movies, getMovies}) {
 	}
 } */
 
-const mapStateToProps = ({movies}) => ({movies});
+const mapStateToProps = ({ movies }) => ({ movies });
 
 const mapDispatchToProps = {
 	getMovies,
 	toggleMovie,
-}
+};
 
 // function mapDispatchToProps(dispatch){
 // 	return {
 // 		getMovies: (movies) => dispatch(getMovies(movies))
 // 	}
 // }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(WatchList);
