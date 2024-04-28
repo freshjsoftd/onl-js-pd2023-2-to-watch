@@ -1,6 +1,7 @@
 // import { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
+import api from '../../api/movie-service';
 import {toggleMovie, delMovie} from '../../store/actions/movieActions'
 import './WatchItem.css'
 
@@ -15,27 +16,32 @@ function toggleBackground(movie){
   }
 }
 
-export const WatchItem = ({movie, toggleMovie, delMovie}) => {
+export const WatchItem = ({movie }) => {
+
+  const dispatch = useDispatch();
 
 
   const {id, title, director} = movie;
 
-  // useEffect(() => {
-  //   console.log('Hello')
-  //   return () => {
-  //     console.log('Bye')
-  //   }
-  // }, [])
-
   const onMovieDelete = (event) => {
     event.stopPropagation();
-    delMovie(id)
+    api.delete(`/watch/${id}`)
+        .then(({statusText}) => console.log(statusText))
+        .catch((error) => console.log(error))
+    dispatch(delMovie(id))
   }
+
+  const onMovieToggle = () => {
+    const updatedMovie = {...movie, isDone: !movie.isDone}
+    api.put(`/watch/${id}`, updatedMovie)
+        .then(({data}) => dispatch(toggleMovie(data.id)))
+  }
+
     return (
       <div 
         className='watch-item'
         style={toggleBackground(movie)}
-        onClick={() => toggleMovie(id)}
+        onClick={onMovieToggle}
       >
         <p className='content'>{title} produced by {director}</p>
         <span 
@@ -47,9 +53,5 @@ export const WatchItem = ({movie, toggleMovie, delMovie}) => {
     )
   }
 
-  const mapDispatchToProps = {
-    delMovie,
-    toggleMovie,
-  };
 
-export default connect(null, mapDispatchToProps)(WatchItem)
+export default WatchItem

@@ -1,15 +1,22 @@
 import { useEffect } from 'react';
 // import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { getMovies, toggleMovie } from '../../store/actions/movieActions';
+import { getMovies } from '../../store/actions/movieActions';
 import WatchItem from '../WatchItem/WatchItem';
 import api from '../../api/movie-service';
 
-function WatchList({ movies, getMovies }) {
+function WatchList() {
+
+	const dispatch = useDispatch();
+
+	const movies = useSelector((state) => state.movies);
+	// const movies = state.movies
+
+
 	useEffect(() => {
-		api.get('/watch').then(({ data }) => getMovies(data));
-	});
+		api.get('/watch').then(({ data }) => dispatch(getMovies(data)));
+	}, [dispatch]);
 	return (
 		<>
 			{movies.map((movie) => {
@@ -42,12 +49,12 @@ function WatchList({ movies, getMovies }) {
 	}
 } */
 
-const mapStateToProps = ({ movies }) => ({ movies });
+// const mapStateToProps = ({ movies }) => ({ movies });
 
-const mapDispatchToProps = {
-	getMovies,
-	toggleMovie,
-};
+// const mapDispatchToProps = {
+// 	getMovies,
+// 	toggleMovie,
+// };
 
 // function mapDispatchToProps(dispatch){
 // 	return {
@@ -55,4 +62,4 @@ const mapDispatchToProps = {
 // 	}
 // }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WatchList);
+export default WatchList;
