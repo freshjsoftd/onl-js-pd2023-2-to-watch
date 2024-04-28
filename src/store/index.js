@@ -1,5 +1,18 @@
-import { createStore } from 'redux';
-import reducer from './reducers/moviesReducer'
+import { createStore, applyMiddleware } from 'redux';
+import logger from 'redux-logger';
+import { composeWithDevTools } from '@redux-devtools/extension';
 
+import rootReducer from './reducers';
 
-export default createStore(reducer)
+/* function logger(store){
+    return function(next){
+        return function(action){
+            console.log('Action is working', action);
+            next(action)
+        }
+    }
+} */
+
+const middleware = applyMiddleware(logger)
+
+export default createStore(rootReducer, composeWithDevTools(middleware));

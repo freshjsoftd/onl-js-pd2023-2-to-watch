@@ -10,8 +10,9 @@ function WatchList() {
 
 	const dispatch = useDispatch();
 
-	const movies = useSelector((state) => state.movies);
-	// const movies = state.movies
+	const movies = useSelector((state) => state.moviesList.movies);
+	const actors = useSelector((state) => state.actorsList.actors);
+	console.log(actors)
 
 
 	useEffect(() => {
