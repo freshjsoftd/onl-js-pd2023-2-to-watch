@@ -1,8 +1,7 @@
 // import { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useField} from '../../hooks';
-import api from '../../api/movie-service';
-import {addMovie} from '../../store/actions/movieActions'
+import {addMovieAction} from '../../store/actions/movieActions'
 import './WatchForm.css'
 
 
@@ -31,11 +30,8 @@ function WatchForm(){
       director: director.value,
       isDone: false,
     }
-    api.post('/watch', newMovie)
-        .then(({data}) => dispatch(addMovie(data)))
+    dispatch(addMovieAction(newMovie))
 
-    // setMovieTitle('');
-    // setDirector('');
   }
 
     return (

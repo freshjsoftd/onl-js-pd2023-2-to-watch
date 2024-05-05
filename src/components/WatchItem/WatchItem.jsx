@@ -1,8 +1,7 @@
 // import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import api from '../../api/movie-service';
-import {toggleMovie, delMovie} from '../../store/actions/movieActions'
+import {toggleMovieAction, delMovieAction} from '../../store/actions/movieActions'
 import './WatchItem.css'
 
 const divStyles = {
@@ -25,16 +24,11 @@ export const WatchItem = ({movie }) => {
 
   const onMovieDelete = (event) => {
     event.stopPropagation();
-    api.delete(`/watch/${id}`)
-        .then(({statusText}) => console.log(statusText))
-        .catch((error) => console.log(error))
-    dispatch(delMovie(id))
+    dispatch(delMovieAction(id))
   }
 
   const onMovieToggle = () => {
-    const updatedMovie = {...movie, isDone: !movie.isDone}
-    api.put(`/watch/${id}`, updatedMovie)
-        .then(({data}) => dispatch(toggleMovie(data.id)))
+    dispatch(toggleMovieAction({...movie, isDone: !movie.isDone}))
   }
 
     return (

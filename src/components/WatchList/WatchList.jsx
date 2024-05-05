@@ -2,9 +2,8 @@ import { useEffect } from 'react';
 // import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getMovies } from '../../store/actions/movieActions';
+import { getMoviesAction } from '../../store/actions/movieActions';
 import WatchItem from '../WatchItem/WatchItem';
-import api from '../../api/movie-service';
 
 function WatchList() {
 
@@ -16,7 +15,7 @@ function WatchList() {
 
 
 	useEffect(() => {
-		api.get('/watch').then(({ data }) => dispatch(getMovies(data)));
+		dispatch(getMoviesAction())
 	}, [dispatch]);
 	return (
 		<>
