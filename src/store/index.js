@@ -13,6 +13,6 @@ import rootReducer from './reducers';
     }
 } */
 
-const middleware = applyMiddleware(logger)
+const middleware = applyMiddleware(logger);
 
 export default createStore(rootReducer, composeWithDevTools(middleware));
