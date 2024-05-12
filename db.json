@@ -21,15 +21,9 @@
       "id": 1655206999251
     },
     {
-      "title": "Назад в будущее",
-      "director": "Роберт Земекис",
-      "isDone": true,
-      "id": 1655209153491
-    },
-    {
       "title": "Чужие",
       "director": "Ридли Скотт",
-      "isDone": false,
+      "isDone": true,
       "id": 1655562907749
     },
     {
@@ -47,7 +41,7 @@
     {
       "title": "Saving Private Ryan",
       "director": "Steven Spielberg",
-      "isDone": false,
+      "isDone": true,
       "id": "_soTg-RQomiu8o9E6Wt2H"
     }
   ],

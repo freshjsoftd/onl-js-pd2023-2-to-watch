@@ -1,5 +1,5 @@
 import { configureStore} from '@reduxjs/toolkit';
-// import logger from 'redux-logger';
+import logger from 'redux-logger';
 
 import movieReducer from './slices/movieSlice'
 
@@ -8,6 +8,7 @@ export default configureStore({
     // reducer: () => {},
     reducer: {
         movieList: movieReducer,
-        actorList: () => {},
-    }
+        // actorList: () => {},
+    },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
 })

@@ -6,8 +6,8 @@ import { MOVIE_SLICE_NAME } from '../../constants/constants';
 
 const initialState = {
 	movies: moviesState,
-    isFetching: false,
-    error: null,
+	isFetching: false,
+	error: null,
 };
 
 export const getMovies = createAsyncThunk(
@@ -36,7 +36,7 @@ export const delMovie = createAsyncThunk(
 					`Can't delete movie. Error status is ${response.status}`
 				);
 			}
-			dispatch(removeMovie({ id }));
+			dispatch(removeMovie(id));
 		} catch (error) {
 			rejectWithValue(error.message);
 		}
@@ -50,7 +50,8 @@ export const toggleMovie = createAsyncThunk(
 			(movie) => movie.id === id
 		);
 		try {
-			const response = await api.patch(`/${MOVIE_SLICE_NAME}/${id}`, {
+			const response = await api.patch(`/${MOVIE_SLICE_NAME}/${id}`, 
+			{...movie,
 				isDone: !movie.isDone,
 			});
 			if (response.status >= 400) {
@@ -60,7 +61,7 @@ export const toggleMovie = createAsyncThunk(
 			}
 			const { data } = response;
 			console.log(data);
-			dispatch(changeMovie(data));
+			dispatch(changeMovie(id));
 		} catch (error) {
 			rejectWithValue(error.message);
 		}
@@ -86,16 +87,14 @@ export const addMovie = createAsyncThunk(
 );
 
 const setError = (state, action) => {
-    state.isFetching = false;
-    state.error = action.payload
-}
+	state.isFetching = false;
+	state.error = action.payload;
+};
 
 const setFetching = (state) => {
-    state.isFetching = true;
-    state.error = null;
-}
-
-
+	state.isFetching = true;
+	state.error = null;
+};
 
 const movieSlice = createSlice({
 	name: MOVIE_SLICE_NAME,
@@ -113,25 +112,42 @@ const movieSlice = createSlice({
 		},
 
 		changeMovie(state, { payload }) {
-			state.movies.map((movie) => {
-				return movie.id === payload.id
+			state.movies = state.movies.map((movie) => {
+				return movie.id === payload
 					? { ...movie, isDone: !movie.isDone }
 					: movie;
 			});
 		},
 	},
-    extraReducers: (builder) => {
-        builder.addCase(getMovies.fulfilled, (state, {payload}) => {
-            state.isFetching = false;
-            state.movies = payload;
-        });
-        builder.addCase(getMovies.pending, setFetching)
-        builder.addCase(getMovies.rejected, setError)
-    }
+	extraReducers: (builder) => {
+		// Get all
+		builder.addCase(getMovies.fulfilled, (state, { payload }) => {
+			state.isFetching = false;
+			state.movies = payload;
+			state.error = null;
+		});
+		builder.addCase(getMovies.pending, setFetching);
+		builder.addCase(getMovies.rejected, setError);
+		// Create
+		builder.addCase(addMovie.fulfilled, (state, { payload }) => {
+			state.isFetching = false;
+			state.error = null;
+			state.movies.push(payload);
+		});
+		builder.addCase(addMovie.pending, setFetching);
+		builder.addCase(addMovie.rejected, setError);
+		// Change
+		builder.addCase(toggleMovie.pending, setFetching);
+		builder.addCase(toggleMovie.rejected, setError);
+		// Delete
+		builder.addCase(delMovie.pending, setFetching);
+		builder.addCase(delMovie.rejected, setError);
+	},
 });
 
 const { actions, reducer } = movieSlice;
 
 const { /* createMovie, */ removeMovie, changeMovie } = actions;
+// export const { /* createMovie, */ removeMovie, changeMovie } = actions;
 
 export default reducer;
